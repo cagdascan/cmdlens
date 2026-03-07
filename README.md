@@ -6,6 +6,7 @@
 - turn a natural-language request into a shell command
 
 Before `cmdlens` executes anything, it shows the exact command, highlights risks, and asks for confirmation.
+While `cmdlens` is waiting on Codex, it shows progress on stderr. If Codex stalls or fails, `cmdlens` stops waiting and prints retry guidance such as `codex login status`.
 
 ## Requirements
 

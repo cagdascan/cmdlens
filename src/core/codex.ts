@@ -2,6 +2,7 @@ import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { execa } from "execa";
+import { CodexError, toCodexError } from "./errors.js";
 import { parseLensResponse } from "./schema.js";
 import type { LensResponse } from "../types.js";
 
@@ -12,7 +13,11 @@ interface FileSystem {
   rm(path: string, options: { force?: boolean; recursive?: boolean }): Promise<void>;
 }
 
-type CommandRunner = (command: string, args: string[]) => Promise<unknown>;
+interface CommandRunnerOptions {
+  timeoutMs: number;
+}
+
+type CommandRunner = (command: string, args: string[], options: CommandRunnerOptions) => Promise<unknown>;
 
 interface InvokeCodexOptions {
   runner?: CommandRunner;
@@ -56,8 +61,10 @@ const OUTPUT_SCHEMA = {
   },
 } as const;
 
-const defaultRunner: CommandRunner = async (command, args) => {
-  await execa(command, args);
+const CODEX_TIMEOUT_MS = 30_000;
+
+const defaultRunner: CommandRunner = async (command, args, options) => {
+  await execa(command, args, { reject: true, timeout: options.timeoutMs });
 };
 
 const defaultFileSystem: FileSystem = {
@@ -88,16 +95,16 @@ export async function invokeCodex(
       "--output-last-message",
       responsePath,
       prompt,
-    ]);
+    ], { timeoutMs: CODEX_TIMEOUT_MS });
 
     const response = await filesystem.readFile(responsePath);
-    return parseLensResponse(JSON.parse(response));
-  } catch (error) {
-    if (error instanceof Error && "code" in error && error.code === "ENOENT") {
-      throw new Error("The local `codex` CLI is not installed or not available on PATH.");
+    try {
+      return parseLensResponse(JSON.parse(response));
+    } catch (error) {
+      throw new CodexError("CODEX_MALFORMED", "Codex returned an unreadable response.", { cause: error });
     }
-
-    throw error;
+  } catch (error) {
+    throw toCodexError(error);
   } finally {
     await filesystem.rm(tempDir, { force: true, recursive: true });
   }

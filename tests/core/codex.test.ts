@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { buildExplainPrompt, buildMakePrompt } from "../../src/core/prompts";
 import { invokeCodex } from "../../src/core/codex";
+import { CodexError } from "../../src/core/errors.js";
 
 describe("Codex prompts", () => {
   it("includes the input command in explain prompts", () => {
@@ -54,6 +55,39 @@ describe("invokeCodex", () => {
     expect(runner).toHaveBeenCalledWith(
       "codex",
       expect.arrayContaining(["exec", "--skip-git-repo-check", "--output-schema"]),
+      expect.objectContaining({ timeoutMs: expect.any(Number) }),
     );
+  });
+
+  it("maps runner timeouts into a typed Codex timeout error", async () => {
+    const runner = vi.fn().mockRejectedValue(Object.assign(new Error("timed out"), { timedOut: true }));
+    const filesystem = {
+      mkdtemp: vi.fn(async () => "/tmp/cmdlens-test"),
+      readFile: vi.fn(async () => ""),
+      rm: vi.fn(async () => undefined),
+      writeFile: vi.fn(async () => undefined),
+    };
+
+    await expect(invokeCodex("prompt", { runner, filesystem })).rejects.toMatchObject({
+      code: "CODEX_TIMEOUT",
+      name: "CodexError",
+    } satisfies Partial<CodexError>);
+  });
+
+  it("maps websocket and dns failures into a typed network error", async () => {
+    const runner = vi
+      .fn()
+      .mockRejectedValue(new Error("failed to connect to websocket: failed to lookup address information"));
+    const filesystem = {
+      mkdtemp: vi.fn(async () => "/tmp/cmdlens-test"),
+      readFile: vi.fn(async () => ""),
+      rm: vi.fn(async () => undefined),
+      writeFile: vi.fn(async () => undefined),
+    };
+
+    await expect(invokeCodex("prompt", { runner, filesystem })).rejects.toMatchObject({
+      code: "CODEX_NETWORK",
+      name: "CodexError",
+    } satisfies Partial<CodexError>);
   });
 });
