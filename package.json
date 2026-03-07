@@ -1,0 +1,28 @@
+{
+  "name": "cmdlens",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "cmdlens": "./dist/bin/cmdlens.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "check": "vitest run",
+    "dev": "tsx src/bin/cmdlens.ts",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^7.8.4",
+    "commander": "^14.0.1",
+    "execa": "^9.6.0",
+    "picocolors": "^1.1.1",
+    "zod": "^4.1.5"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0",
+    "vitest": "^3.2.4"
+  }
+}
