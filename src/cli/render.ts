@@ -1,5 +1,5 @@
 import pc from "picocolors";
-import type { LensResult } from "../types";
+import type { LensResult } from "../types.js";
 
 interface RenderOptions {
   json?: boolean;

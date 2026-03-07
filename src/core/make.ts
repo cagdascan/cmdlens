@@ -1,7 +1,7 @@
-import { invokeCodex } from "./codex";
-import { buildMakePrompt } from "./prompts";
-import { analyzeSafety } from "./safety";
-import type { LensResponse, LensResult } from "../types";
+import { invokeCodex } from "./codex.js";
+import { buildMakePrompt } from "./prompts.js";
+import { analyzeSafety } from "./safety.js";
+import type { LensResponse, LensResult } from "../types.js";
 
 type CodexInvoker = (prompt: string) => Promise<LensResponse>;
 
@@ -14,6 +14,6 @@ export async function makeCommand(
   return {
     ...response,
     safety: analyzeSafety(response.primaryCommand),
-    alternativeSafety: response.alternatives.map((alternative) => analyzeSafety(alternative)),
+    alternativeSafety: response.alternatives.map((alternative: string) => analyzeSafety(alternative)),
   };
 }

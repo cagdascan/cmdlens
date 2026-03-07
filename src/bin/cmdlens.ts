@@ -1,12 +1,12 @@
 import { Command } from "commander";
 import { confirm } from "@inquirer/prompts";
-import { explainCommand as defaultExplainCommand } from "../core/explain";
-import { makeCommand as defaultMakeCommand } from "../core/make";
-import { executeWithConfirmation as defaultExecuteWithConfirmation } from "../core/execute";
-import { detectIntent } from "../core/intent";
-import { renderLensResult } from "../cli/render";
-import { startInteractiveSession } from "../cli/interactive";
-import type { LensResult } from "../types";
+import { explainCommand as defaultExplainCommand } from "../core/explain.js";
+import { makeCommand as defaultMakeCommand } from "../core/make.js";
+import { executeWithConfirmation as defaultExecuteWithConfirmation } from "../core/execute.js";
+import { detectIntent } from "../core/intent.js";
+import { renderLensResult } from "../cli/render.js";
+import { startInteractiveSession } from "../cli/interactive.js";
+import type { LensResult } from "../types.js";
 
 interface CliOptions {
   json?: boolean;
@@ -32,7 +32,7 @@ async function handleResult(
 ): Promise<void> {
   renderLensResult(result, { json: options.json === true });
   await dependencies.executeWithConfirmation(result.primaryCommand, {
-    confirm: async (message) => confirm({ message }),
+    confirm: async (message: string) => confirm({ message }),
     riskLevel: result.safety.level,
     yes: options.yes,
   });

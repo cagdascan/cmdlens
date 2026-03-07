@@ -2,8 +2,8 @@ import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { execa } from "execa";
-import { parseLensResponse } from "./schema";
-import type { LensResponse } from "../types";
+import { parseLensResponse } from "./schema.js";
+import type { LensResponse } from "../types.js";
 
 interface FileSystem {
   mkdtemp(prefix: string): Promise<string>;

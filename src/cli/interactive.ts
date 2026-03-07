@@ -1,9 +1,9 @@
 import { confirm, input, select } from "@inquirer/prompts";
-import type { executeWithConfirmation } from "../core/execute";
-import type { explainCommand } from "../core/explain";
-import type { makeCommand } from "../core/make";
-import { detectIntent } from "../core/intent";
-import { renderLensResult } from "./render";
+import type { executeWithConfirmation } from "../core/execute.js";
+import type { explainCommand } from "../core/explain.js";
+import type { makeCommand } from "../core/make.js";
+import { detectIntent } from "../core/intent.js";
+import { renderLensResult } from "./render.js";
 
 interface InteractiveDependencies {
   explainCommand: typeof explainCommand;
@@ -35,7 +35,7 @@ export async function startInteractiveSession(dependencies: InteractiveDependenc
             message: "Choose a command",
             choices: [
               { name: "Primary command", value: result.primaryCommand },
-              ...result.alternatives.map((alternative, index) => ({
+              ...result.alternatives.map((alternative: string, index: number) => ({
                 name: `Alternative ${index + 1}`,
                 value: alternative,
               })),
@@ -49,7 +49,7 @@ export async function startInteractiveSession(dependencies: InteractiveDependenc
     }
 
     await dependencies.executeWithConfirmation(commandToRun, {
-      confirm: async (message) => confirm({ message }),
+      confirm: async (message: string) => confirm({ message }),
       riskLevel: commandToRun === result.primaryCommand ? result.safety.level : "medium",
     });
   }

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { LensResponse } from "../types";
+import type { LensResponse } from "../types.js";
 
 const lensResponseSchema = z.object({
   mode: z.enum(["explain", "make"]),

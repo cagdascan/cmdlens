@@ -1,4 +1,4 @@
-import type { RiskLevel, SafetyAnalysis } from "../types";
+import type { RiskLevel, SafetyAnalysis } from "../types.js";
 
 interface SafetyRule {
   level: RiskLevel;

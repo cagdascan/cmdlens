@@ -1,5 +1,5 @@
 import { execa } from "execa";
-import type { RiskLevel } from "../types";
+import type { RiskLevel } from "../types.js";
 
 interface CommandResult {
   exitCode: number;
