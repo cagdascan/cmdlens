@@ -8,3 +8,10 @@ export interface LensResponse {
   alternatives: string[];
   confidence: number;
 }
+
+export type RiskLevel = "low" | "medium" | "high";
+
+export interface SafetyAnalysis {
+  level: RiskLevel;
+  warnings: string[];
+}
