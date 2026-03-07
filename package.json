@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "check": "vitest run",
     "dev": "tsx src/bin/cmdlens.ts",
     "test": "vitest run"
   },
