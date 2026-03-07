@@ -15,3 +15,8 @@ export interface SafetyAnalysis {
   level: RiskLevel;
   warnings: string[];
 }
+
+export interface LensResult extends LensResponse {
+  safety: SafetyAnalysis;
+  alternativeSafety: SafetyAnalysis[];
+}
