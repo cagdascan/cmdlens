@@ -1,16 +1,40 @@
 {
   "name": "cmdlens",
   "version": "0.1.0",
-  "private": true,
+  "description": "Explain shell commands and generate them from plain English using Codex",
   "type": "module",
+  "license": "MIT",
+  "author": "Cagdas Can",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cagdascan/cmdlens.git"
+  },
+  "keywords": [
+    "cli",
+    "shell",
+    "command",
+    "explain",
+    "codex",
+    "ai",
+    "terminal"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
   "bin": {
     "cmdlens": "./dist/bin/cmdlens.js"
   },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "check": "vitest run",
     "dev": "tsx src/bin/cmdlens.ts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepublishOnly": "npm run build && npm run test"
   },
   "dependencies": {
     "@inquirer/prompts": "^7.8.4",

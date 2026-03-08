@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { Command } from "commander";
 import { confirm } from "@inquirer/prompts";
 import { explainCommand as defaultExplainCommand } from "../core/explain.js";
