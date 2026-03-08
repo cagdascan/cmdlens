@@ -1,6 +1,6 @@
 {
   "name": "cmdlens",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Explain shell commands and generate them from plain English using Codex",
   "type": "module",
   "license": "MIT",
