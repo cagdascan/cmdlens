@@ -126,6 +126,4 @@ export async function main(argv: string[] = process.argv, options: MainOptions =
   }
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
-  void main();
-}
+void main();
